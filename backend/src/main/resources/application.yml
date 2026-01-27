@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/logistics?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.dk.logistics: DEBUG
+    org.springframework.web: DEBUG
+
+admin:
+  password:
+    admin-l1: admin1-123456
+    admin-l2: admin2-123456
