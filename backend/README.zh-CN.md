@@ -1,5 +1,5 @@
 # logistics-backend
-
+[English](README.md) | [中文](README.zh-CN.md)
 🚀 物流管理系统 · 后端服务
 
 本项目是 **logistics-example** 的后端部分，基于 **Spring Boot** 构建，  
