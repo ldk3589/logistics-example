@@ -1,27 +1,247 @@
-# Getting Started
+# logistics-example
+[English](README.md) | [中文](README.zh-CN.md)
 
-### Reference Documentation
+🚚 Logistics Example
 
-For further reference, please consider the following sections:
+A **full-stack logistics order management system** built with **Spring Boot + Vue 3**, featuring user authentication, role-based access control, order lifecycle management, and statistical analysis.
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/3.5.10/maven-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/3.5.10/maven-plugin/build-image.html)
-* [Spring Web](https://docs.spring.io/spring-boot/3.5.10/reference/web/servlet.html)
+This project is designed as a **learning-oriented project**, suitable for demonstrating practical skills in **Java backend**, **full-stack development**, and **enterprise-style system design**.
 
-### Guides
+---
 
-The following guides illustrate how to use some features concretely:
+## 📁 Project Structure
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+```
+logistics-example
+├── backend/                # Backend: Spring Boot project
+│   ├── src/
+│   ├── logs/               # Backend logs (auto-generated)
+│   ├── pom.xml
+│   └── README.md           # Backend README
+│
+├── frontend/               # Frontend: Vue 3 + Vite project
+│   ├── src/
+│   ├── logs/               # Frontend logs (optional)
+│   ├── package.json
+│   └── README.md           # Frontend README
+│
+├── .gitattributes
+└── README.md               # Project root README (this file)
+```
 
-### Maven Parent overrides
+---
 
-Due to Maven's design, elements are inherited from the parent POM to the project POM.
-While most of the inheritance is fine, it also inherits unwanted elements like `<license>` and `<developers>` from the
-parent.
-To prevent this, the project POM contains empty overrides for these elements.
-If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
+## 🚀 Features
 
+### ✅ Implemented Features
+
+#### 👤 User & Authorization
+- User registration and login
+- Automatic trimming of leading/trailing spaces in username & password
+- Validation to prevent spaces inside username or password
+- Role-based access control:
+    - USER
+    - ADMIN_L2
+    - ADMIN_L1
+- Admin registration protected by admin passwords
+
+#### 📦 Order Management
+- Create orders
+- Update order status (PROCESSING / COMPLETED / CANCELLED)
+- Assign orders to administrators
+- Role-based order visibility
+
+#### 📊 Statistics & Analytics
+- Order count statistics
+- Total order amount statistics
+- Time-based aggregation:
+    - Weekly
+    - Monthly
+    - Yearly
+    - Historical (all-time)
+- Line charts rendered with **ECharts**
+
+#### 🔐 Security & Engineering
+- JWT-based authentication
+- Spring Security integration
+- Axios request/response interceptors
+- Global exception handling
+- Automatic backend & frontend logging
+
+---
+
+## 🧱 Tech Stack
+
+### Backend
+- Java 21
+- Spring Boot
+- Spring Security (JWT)
+- MyBatis-Plus
+- MySQL
+- Maven
+- Logback (file-based logging)
+
+### Frontend
+- Vue 3
+- Vite
+- Element Plus
+- Axios
+- Vue Router
+- ECharts
+
+---
+
+## ⚙️ Prerequisites
+
+- JDK ≥ 17 (Recommended: 21)
+- Node.js ≥ 18
+- MySQL ≥ 8.0
+- Maven ≥ 3.8
+
+---
+
+## 🛠️ Getting Started
+
+### 1️⃣ Backend Setup
+
+#### Step 1: Create Database
+
+```sql
+CREATE DATABASE logistics DEFAULT CHARACTER SET utf8mb4;
+```
+
+#### Step 2: Configure Database
+
+File path:
+
+```
+backend/src/main/resources/application-dev.yml
+```
+
+Example:
+
+```yml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/logistics?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+```
+
+#### Step 3: Start Backend
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+Backend will be available at:
+
+```
+http://localhost:8080
+```
+
+---
+
+### 2️⃣ Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend will be available at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## 🔗 API Example
+
+### Login API
+
+```
+POST /auth/login
+```
+
+Request Body:
+
+```json
+{
+  "username": "test",
+  "password": "123456"
+}
+```
+
+Response Example:
+
+```json
+{
+  "token": "xxxx.yyyy.zzzz",
+  "userInfo": {
+    "id": 1,
+    "username": "test",
+    "role": "USER"
+  }
+}
+```
+
+---
+
+## 🔐 Authentication Flow
+
+- **Registration**
+    - Input validation on username & password
+    - Default role: USER
+    - Admin roles require correct admin password
+
+- **Login**
+    - Successful login returns JWT token and user info
+    - Token stored in `localStorage`
+    - Frontend route guards protect secured pages
+
+---
+
+## 📄 Logging
+
+### Backend Logs
+- Automatically written to:
+
+```
+backend/logs/
+```
+
+- Includes:
+    - Application startup logs
+    - SQL execution logs
+    - API access & exception logs
+
+### Frontend Logs
+- Can be extended to record:
+    - Request errors
+    - Runtime exceptions
+    - User behavior events
+
+---
+
+## 🎯 Project Purpose
+
+- ✔ Backend / Full-stack interview project
+- ✔ Demonstrates real-world Spring Boot + Vue architecture
+- ✔ Clean structure, easy to extend
+- ✔ Suitable for enterprise-style system design discussions
+
+---
+
+## 📌 Future Improvements
+
+- Pagination & advanced search
+- Admin dashboard
+- Excel export
+- Audit logs
+- Docker-based deployment
+
+---
