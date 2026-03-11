@@ -1,189 +1,176 @@
-# logistics-frontend
+# frontend
+[English](README.md) | [中文](README-zh.md)
 
-🚚 Logistics Management System · Frontend
+Frontend module for the RBAC permission management system.
 
-This project is the **frontend part** of `logistics-example`, built with **Vue 3** and **Element Plus**.  
-It works with a Spring Boot backend and implements **JWT-based authentication**,  
-**role-based dynamic menus**, **order management**, and **order statistics visualization**.
+This module is built with Vue 3 and Element Plus.
 
----
+It provides pages for:
 
-## 🧱 Tech Stack
-
-- **Framework**: Vue 3 (Composition API)
-- **Build Tool**: Vite
-- **UI Library**: Element Plus
-- **HTTP Client**: Axios
-- **Chart Library**: ECharts
-- **Routing**: Vue Router
-- **State / Auth**: LocalStorage + JWT
-- **Logging**: Custom Frontend Logger (file + console)
-
----
-
-## 📁 Project Structure
-
-```
-frontend
-├── src
-│   ├── api/                 # API request modules
-│   ├── assets/              # Static assets
-│   ├── components/          # Reusable components
-│   ├── layout/              # Layout & dynamic menu
-│   ├── router/              # Vue Router config
-│   ├── utils/
-│   │   ├── auth.js           # Token & role helpers
-│   │   ├── logger.js         # Frontend logging utility
-│   │   └── request.js        # Axios instance & interceptors
-│   ├── views/
-│   │   ├── Login.vue
-│   │   ├── Order.vue
-│   │   ├── OrderStat.vue
-│   │   └── ...
-│   ├── App.vue
-│   └── main.js
-│
-├── public/
-├── logs/                    # Frontend logs (runtime)
-├── vite.config.js
-├── package.json
-└── README.md
-```
+- login and registration
+- dashboard
+- user management
+- role management
+- permission management
+- menu management
+- department management
+- order management
+- login log
+- operation log
 
 ---
 
-## 🔐 Authentication & Authorization
+## Tech Stack
 
-### Login
-
-- User logs in with username & password
-- Backend returns:
-    - JWT Token
-    - User info (id, username, role)
-- Token is stored in `localStorage`
-
-### Authorization
-
-- Dynamic menus rendered based on `role`
-- Route guards protect pages
-- Axios interceptor injects JWT automatically
+- Vue 3
+- Vite
+- Vue Router
+- Element Plus
+- Axios
 
 ---
 
-## 👤 Role-Based UI Behavior
-
-| Role | Permissions |
-|-----|-------------|
-| USER | View & create own orders, view own statistics |
-| ADMIN_L2 | Manage assigned orders, view own statistics |
-| ADMIN_L1 | Full access: all orders, assignment, statistics |
-
-Menus and pages are automatically filtered by role.
-
----
-
-## 📝 Registration Rules
-
-- Username & password:
-    - Leading and trailing spaces are trimmed
-    - Spaces in the middle are **not allowed**
-- No role selection in UI
-- Admin registration requires correct **admin password**
-    - Wrong password → registered as normal user
-
----
-
-## 📦 Order Module
-
-- Order list
-- Order creation
-- Status update
-- Assignment (ADMIN_L1 only)
-- Permission-sensitive operations
+## Project Structure
+    
+    frontend                          # Frontend folder
+    ├── public                        # Public files
+    ├── src                           # Source code
+    │   ├── layout                    # Page layout
+    │   ├── router                    # Page links
+    │   ├── utils                     # Helpful tools
+    │   ├── views                     # Page views
+    │   ├── App.vue                   # Main Vue page
+    │   └── main.js                   # Main JS file
+    ├── .gitattributes                # Git rules
+    ├── .gitignore                    # Hide from Git
+    ├── index.html                    # Main web page
+    ├── package.json                  # Tool list
+    ├── package-lock.json             # Locked tools
+    ├── vite.config.js                # Vite settings
+    ├── README.md                     # Read me (English)
+    └── README.zh-CN.md               # Read me (Chinese)
 
 ---
 
-## 📊 Order Statistics Module
+## Main Pages
 
-- Statistics by:
-    - Week
-    - Month
-    - Year
-    - All-time
-- Data displayed via:
-    - Line charts (ECharts)
-    - Table view
-- Same API, different results based on role
-
----
-
-## 📄 Frontend Logging
-
-### Logger Utility
-
-- File: `src/utils/logger.js`
-- Automatically logs:
-    - API errors
-    - Runtime errors
-    - Custom debug info
-
-### Log Output Directory
-
-```
-frontend/logs/
-```
-
-Logs are persisted for debugging and interview demonstration.
+- Login
+- Dashboard
+- User Management
+- Role Management
+- Permission Management
+- Menu Management
+- Department Management
+- Order Management
+- Login Log
+- Operation Log
 
 ---
 
-## ▶️ Project Setup
+## Frontend Functions
 
-### Install dependencies
+### Authentication
 
-```bash
-cd frontend
-npm install
-```
+- login page
+- register page
+- token storage
+- route guard
+- logout
 
-### Run development server
+### Request Handling
 
-```bash
-npm run dev
-```
+- Axios request interceptor
+- attach JWT token automatically
+- unified error message
+- redirect to login when token expires
 
-Default access:
+### Permission Display
 
-```
-http://localhost:5173
-```
+- dynamic menu display
+- button display based on permission code
+- page access controlled by login state
 
----
+### Business Pages
 
-## 🔗 Backend Dependency
-
-This frontend depends on the backend service:
-
-```
-http://localhost:8080
-```
-
-Make sure backend is running before login.
-
----
-
-## 🎯 Design Goals
-
-- Clear separation of concerns
-- Role-driven UI & logic
-- Minimal but complete feature set
-- Close to real enterprise frontend projects
+- user CRUD related pages
+- role CRUD related pages
+- permission CRUD related pages
+- menu CRUD related pages
+- department CRUD related pages
+- order CRUD related pages
+- login log and operation log pages
 
 ---
 
-## 📌 Notes
+## Run Frontend
 
-- This project is intended for **learning showcase**
-- Emphasizes correctness, clarity, and maintainability
+    cd frontend
+    npm install
+    npm run dev
+
+Default address:
+
+    http://localhost:5173
 
 ---
+
+## Proxy Configuration
+
+The frontend usually proxies requests to backend service.
+
+Typical local development target:
+
+    http://localhost:8080
+
+Please check the proxy settings in:
+
+    vite.config.js
+
+---
+
+## Router Notes
+
+The frontend router path must match the menu path returned by backend.
+
+For example, if backend menu path is:
+
+    /system/user
+    /system/role
+    /system/menu
+
+then frontend router should also support these paths.
+
+If a page becomes blank, first check:
+
+- whether the frontend route exists
+- whether backend menu path matches router path
+- whether current user has permission
+- whether the API path is correct
+
+---
+
+## Permission Notes
+
+Frontend button display is based on permission code.
+
+For example:
+
+- sys:user:add
+- sys:user:update
+- sys:user:delete
+- sys:role:add
+- sys:permission:update
+- order:assign
+
+But real security still depends on backend permission checks.
+
+---
+
+## Suggested Improvements
+
+- dynamic route registration
+- reusable permission directive
+- reusable table and form components
+- better department selector
+- better user selector for order assignment
+- export and import features

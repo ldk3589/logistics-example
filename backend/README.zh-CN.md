@@ -1,252 +1,246 @@
-# logistics-backend
+# backend
 [English](README.md) | [中文](README.zh-CN.md)
-🚀 物流管理系统 · 后端服务
 
-本项目是 **logistics-example** 的后端部分，基于 **Spring Boot** 构建，  
-提供 **用户认证、权限控制、订单管理、订单统计分析** 等核心功能，  
-采用 **JWT 无状态认证 + 基于角色的访问控制（RBAC）**。
+RBAC 权限管理系统的后端服务模块。
 
----
+本模块基于 Spring Boot 开发，主要提供：
 
-## 🧱 技术栈
-
-- **Java**：JDK 21
-- **后端框架**：Spring Boot
-- **安全框架**：Spring Security + JWT
-- **ORM**：MyBatis-Plus
-- **数据库**：MySQL 8.x
-- **构建工具**：Maven
-- **日志系统**：Logback（文件日志）
+- 登录与注册
+- 用户管理
+- 角色管理
+- 权限管理
+- 菜单管理
+- 部门管理
+- 订单管理
+- 登录日志与操作日志
+- 基于 RBAC 的权限控制
+- 订单数据范围控制
 
 ---
 
-## 📁 项目结构说明
+## 技术栈
 
-```
-backend
-├── src/main/java/com/dk/logistics
-│   ├── config/              # 配置类（Security、跨域等）
-│   ├── controller/          # 控制层（REST API）
-│   ├── dto/                 # 数据传输对象
-│   ├── entity/              # 实体类（User、Order 等）
-│   ├── mapper/              # MyBatis-Plus Mapper 接口
-│   ├── security/            # JWT、认证授权相关逻辑
-│   ├── service/             # 业务接口层
-│   ├── service/impl         # 业务实现层
-│   └── LogisticsApplication.java
-│
-├── src/main/resources
-│   ├── mapper/              # Mapper XML（如有）
-│   ├── application.yml
-│   ├── application-dev.yml
-│   └── logback-spring.xml   # 日志配置文件
-│
-├── logs/                    # 后端运行日志（自动生成）
-├── pom.xml
-└── README.md
-```
+- Java 21
+- Spring Boot 3
+- Spring Security
+- JWT
+- MyBatis-Plus
+- MySQL
+- Maven
 
 ---
 
-## 🔐 认证与权限设计
+## 模块结构
 
-### 用户角色说明
-
-| 角色 | 含义 |
-|------|------|
-| USER | 普通用户 |
-| ADMIN_L2 | 二级管理员 |
-| ADMIN_L1 | 一级管理员 |
-
----
-
-## 📝 注册规则说明
-
-- **用户名 / 密码**
-    - 自动去除首尾空格
-    - 中间不允许包含空格
-- **默认角色**
-    - 普通用户（USER）
-- **管理员注册**
-    - 需要输入正确的管理员密码
-    - 管理员密码分为一级 / 二级
-    - 输入错误 → 自动降级为普通用户
-
----
-
-## 🔑 登录说明
-
-- 登录成功后返回：
-    - JWT Token
-    - 用户基础信息（id、用户名、角色）
-- 所有受保护接口必须携带 Token
+    backend                           # 后端文件夹
+    ├── .mvn                          # Maven 工具
+    ├── src                           # 源代码
+    │   ├── main                      # 主要代码
+    │   │   ├── java/com/dk/logistics # Java 应用代码
+    │   │   │   ├── common            # 公共工具
+    │   │   │   ├── config            # 应用设置
+    │   │   │   ├── framework         # 基础框架
+    │   │   │   └── module            # 业务模块
+    │   │   │       ├── auth          # 登录和访问权限
+    │   │   │       ├── order         # 订单模块
+    │   │   │       └── system        # 系统模块
+    │   │   │           ├── dept      # 部门模块
+    │   │   │           ├── log       # 日志记录模块
+    │   │   │           ├── menu      # 菜单模块
+    │   │   │           ├── permission# 权限规则模块
+    │   │   │           ├── role      # 用户角色模块
+    │   │   │           └── user      # 用户模块
+    │   │   └── resources             # 资源文件
+    │   └── test                      # 测试代码
+    ├── .gitattributes                # Git 规则
+    ├── .gitignore                    # 隐藏不提交的文件
+    ├── mvnw                          # Maven 工具 (Mac/Linux)
+    ├── mvnw.cmd                      # Maven 工具 (Windows)
+    ├── pom.xml                       # 工具列表
+    ├── README.md                     # 说明文件 (英文)
+    └── README.zh-CN.md               # 说明文件 (中文)
 
 ---
 
-## 🛡️ 安全设计
+## 主要功能
 
-- JWT 无状态认证
-- Spring Security 过滤器链
-- 基于角色的接口访问控制（`@PreAuthorize`）
-- 自定义 `UserDetailsService`
-- 使用 `BCryptPasswordEncoder` 进行密码加密
+### auth
 
----
+- 注册
+- 登录
+- 返回当前用户信息
+- 返回当前用户菜单
+- 返回当前用户权限
 
-## 📦 订单管理模块
+### system/user
 
-### 功能概述
+- 用户列表
+- 用户详情
+- 新增用户
+- 修改用户
+- 删除用户
+- 修改用户状态
+- 给用户分配角色
 
-- 创建订单
-- 修改订单状态
-- 指派订单给管理员
-- 不同角色可见订单范围不同：
-    - **USER**：仅能查看自己的订单
-    - **ADMIN_L2**：仅能查看自己负责的订单
-    - **ADMIN_L1**：可查看所有订单
+### system/role
 
----
+- 角色列表
+- 角色详情
+- 新增角色
+- 修改角色
+- 删除角色
+- 分配权限
+- 分配菜单
 
-## 📊 订单统计模块
+### system/permission
 
-支持以下统计维度：
+- 权限列表
+- 权限详情
+- 新增权限
+- 修改权限
+- 删除权限
 
-- 按周统计
-- 按月统计
-- 按年统计
-- 历史统计（自订单创建以来）
+### system/menu
 
-统计内容包括：
+- 菜单树列表
+- 菜单详情
+- 新增菜单
+- 修改菜单
+- 删除菜单
 
-- 订单数量
-- 订单总金额
+### system/dept
 
-统计数据由后端聚合，前端直接用于图表展示。
+- 部门树列表
+- 部门详情
+- 新增部门
+- 修改部门
+- 删除部门
 
----
+### system/log
 
-## 📄 日志系统
+- 查询登录日志
+- 查询操作日志
 
-### 日志框架
+### order
 
-- 使用 **Logback**
-- 配置文件：
-
-```
-src/main/resources/logback-spring.xml
-```
-
-### 日志输出目录
-
-```
-backend/logs/
-```
-
-### 记录内容
-
-- 应用启动日志
-- 接口访问日志
-- SQL 执行日志
-- 异常完整堆栈信息
-
-日志目录在项目启动时会自动创建。
-
----
-
-## ⚙️ 配置说明
-
-### 数据库配置
-
-配置文件：
-
-```
-src/main/resources/application-dev.yml
-```
-
-示例：
-
-```yml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/logistics?useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
-```
+- 订单列表
+- 新增订单
+- 修改订单
+- 删除订单
+- 分配订单
+- 完成订单
 
 ---
 
-## ▶️ 启动方式
+## RBAC 设计
 
-### 1️⃣ 创建数据库
+系统采用标准 RBAC 模型：
 
-```sql
-CREATE DATABASE logistics DEFAULT CHARACTER SET utf8mb4;
-```
+- 用户 -> 角色
+- 角色 -> 权限
+- 角色 -> 菜单
 
-### 2️⃣ 启动后端服务
+说明：
 
-```bash
-cd backend
-mvn spring-boot:run
-```
-
-访问地址：
-
-```
-http://localhost:8080
-```
+- 用户不直接拥有权限
+- 用户通过角色获得权限
+- 后端权限校验才是真正的安全边界
+- 前端是否显示按钮只是为了更好的使用体验
 
 ---
 
-## 🔗 接口示例
+## 数据权限
 
-### 登录接口
+订单模块支持数据范围控制。
 
-```
-POST /auth/login
-```
+常见数据范围包括：
 
-请求示例：
+- ALL
+- DEPT
+- DEPT_AND_CHILD
+- SELF
 
-```json
-{
-  "username": "test",
-  "password": "123456"
-}
-```
-
-返回示例：
-
-```json
-{
-  "token": "xxxx.yyyy.zzzz",
-  "userInfo": {
-    "id": 1,
-    "username": "test",
-    "role": "USER"
-  }
-}
-```
+这表示不同角色能看到不同范围的订单数据。
 
 ---
 
-## 🎯 项目设计目标
+## 数据表
 
-- 清晰的三层结构（Controller / Service / Mapper）
-- 职责分离，结构清楚
-- 默认安全，避免权限漏洞
-- 便于后续扩展：
-    - 分页查询
-    - 操作审计日志
-    - 管理员后台
-    - Docker / 部署优化
+常见表包括：
+
+- sys_user
+- sys_role
+- sys_permission
+- sys_menu
+- sys_dept
+- sys_user_role
+- sys_role_permission
+- sys_role_menu
+- orders
+- sys_login_log
+- sys_operation_log
+
+---
+
+## 启动后端
+
+### 1. 配置数据库
+
+请修改后端资源文件中的数据库配置。
+
+常见配置项：
+
+    spring:
+      datasource:
+        url: jdbc:mysql://localhost:3306/your_database_name
+        username: root
+        password: your_password
+
+### 2. 启动服务
+
+    cd backend
+    mvn spring-boot:run
+
+默认地址：
+
+    http://localhost:8080
 
 ---
 
-## 📌 说明
+## 接口风格
 
-- 本项目用于 **学习展示**
-- 侧重真实企业后端开发实践
-- 避免无意义的过度设计
+后端采用：
+
+- RESTful API
+- 统一返回结构
+- 全局异常处理
+- JWT 鉴权
+- 方法级权限控制
 
 ---
+
+## 使用说明
+
+在测试前，请先确认：
+
+- 数据库表已经初始化
+- 测试角色和权限数据已经插入
+- 用户密码已经正确加密
+- 数据库菜单路径和前端路由路径一致
+
+如果登录失败，优先检查：
+
+- 数据库连接
+- 密码加密
+- 角色 / 权限初始化数据
+- JWT 配置
+
+---
+
+## 后续优化方向
+
+- 完善 Swagger 文档
+- Docker 部署
+- 增加单元测试
+- 导出功能
+- 更完善的数据权限设计

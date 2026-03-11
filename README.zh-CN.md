@@ -1,243 +1,284 @@
 # logistics-example
-[English](README.md) | [中文](README.zh-CN.md)
 
-🚚 Logistics Example
+[English](README.md) | [中文](READM.zh-CN.md)
 
-一个 **前后端分离的物流订单管理系统**，支持用户注册 / 登录、订单创建、订单状态管理、订单统计与权限分级（普通用户 / 管理员）。
+一个基于 Spring Boot 和 Vue 3 的前后端分离 RBAC 权限管理系统。
 
-本项目为 **学习导向型项目**，适合用于  
-**Spring Boot + Vue 3 + MyBatis-Plus + Element Plus** 的全栈综合练手，尤其适合日企 / Java 后端 / 全栈岗位展示。
+本项目主要面向企业后台常见场景，包含：
 
----
+- 登录与注册
+- 用户、角色、权限、菜单、部门管理
+- 订单业务模块
+- 登录日志与操作日志
+- 基于角色的访问控制
+- 前端动态菜单展示
 
-## 📁 项目结构
+适合作为：
 
-```
-logistics-example
-├── backend/                # 后端：Spring Boot 项目（logistics-backend）
-│   ├── src/
-│   ├── logs/               # 后端运行日志（自动生成）
-│   ├── pom.xml
-│   └── README.md           # 后端子项目说明
-│
-├── frontend/               # 前端：Vue 3 + Vite 项目（logistics-frontend）
-│   ├── src/
-│   ├── logs/               # 前端日志（可选）
-│   ├── package.json
-│   └── README.md           # 前端子项目说明
-│
-├── .gitattributes
-└── README.md               # 项目总说明（当前文件）
-```
+- Java 后端练手项目
+- 前后端联调练习项目
+- 简历项目 / 面试项目
 
 ---
 
-## 🚀 功能介绍
+## 项目功能
 
-### ✅ 已实现功能
+### 认证功能
 
-#### 👤 用户与权限
-- 用户注册 / 登录
-- 自动去除用户名、密码首尾空格
-- 禁止用户名 / 密码中间包含空格
-- 普通用户 / 管理员权限区分
-- 管理员密码校验（一级 / 二级管理员）
+- 用户注册
+- 用户登录
+- JWT Token 认证
+- 前端路由守卫
+- Axios 请求拦截
 
-#### 📦 订单管理
-- 创建订单
-- 订单状态流转（PROCESSING / COMPLETED / CANCELLED）
-- 支持金额、联系方式、通知方式
-- 按权限查看订单数据
+### RBAC 权限管理
 
-#### 📊 数据统计
-- 订单数量统计
-- 订单金额统计
-- 支持 **周 / 月 / 年 / 历史** 维度
-- ECharts 折线趋势图展示
+- 用户管理
+- 角色管理
+- 权限管理
+- 菜单管理
+- 部门管理
+- 用户分配角色
+- 角色分配权限
+- 角色分配菜单
 
-#### 🔐 安全与工程化
-- JWT 登录认证
-- Axios 请求拦截器
-- 未登录自动跳转登录页
-- 后端统一异常处理
-- 前后端日志自动记录
+### 业务模块
+
+- 订单列表
+- 新增订单
+- 分配订单
+- 完成订单
+- 删除订单
+- 基于角色与数据范围控制数据可见性
+
+### 日志功能
+
+- 登录日志查询
+- 操作日志查询
 
 ---
 
-## 🧱 技术栈
+## 技术栈
 
-### 后端（Backend）
+### 后端
+
 - Java 21
-- Spring Boot
-- Spring Security（JWT）
+- Spring Boot 3
+- Spring Security
+- JWT
 - MyBatis-Plus
 - MySQL
 - Maven
-- Logback（文件日志）
 
-### 前端（Frontend）
+### 前端
+
 - Vue 3
 - Vite
+- Vue Router
 - Element Plus
 - Axios
-- Vue Router
-- ECharts
 
 ---
 
-## ⚙️ 环境准备
+## 项目结构
 
-### 必须环境
+    logistics-example             # 主文件夹
+    ├── backend                   # 后端部分 (Java)
+    │   ├── .mvn                  # Maven 工具文件
+    │   ├── src                   # 源代码文件夹
+    │   │   ├── main              # 主要代码
+    │   │   │   ├── java          # Java 代码
+    │   │   │   │   └── com
+    │   │   │   │       └── dk
+    │   │   │   │           └── logistics # 你的应用代码
+    │   │   │   └── resources     # 应用设置和数据
+    │   │   └── test              # 测试代码
+    │   ├── .gitattributes        # Git 设置
+    │   ├── .gitignore            # 隐藏不提交的文件
+    │   ├── mvnw                  # Maven 工具 (Mac/Linux)
+    │   ├── mvnw.cmd              # Maven 工具 (Windows)
+    │   ├── pom.xml               # 后端工具列表
+    │   └── README.zh-CN.md       # 说明文件 (中文)
+    │
+    ├── frontend                  # 前端部分 (Vue)
+    │   ├── public                # 公共文件
+    │   ├── src                   # 源代码文件夹
+    │   │   ├── layout            # 页面布局
+    │   │   ├── router            # 页面链接
+    │   │   ├── utils             # 帮助工具
+    │   │   ├── views             # 页面视图
+    │   │   ├── App.vue           # 主 Vue 页面
+    │   │   └── main.js           # 主 JS 文件
+    │   ├── .gitattributes        # Git 设置
+    │   ├── .gitignore            # 隐藏不提交的文件
+    │   ├── index.html            # 主网页
+    │   ├── package.json          # 前端工具列表
+    │   ├── package-lock.json     # 锁定工具版本
+    │   ├── vite.config.js        # Vite 工具设置
+    │   ├── README.md             # 说明文件 (英文)
+    │   └── README.zh-CN.md       # 说明文件 (中文)
+    │
+    ├── .gitignore                # 隐藏不提交的文件
+    ├── README.md                 # 说明文件 (英文)
+    └── README-zh.md              # 说明文件 (中文)
+---
 
-- JDK ≥ 17（推荐 21）
-- Node.js ≥ 18
-- MySQL ≥ 8.0
-- Maven ≥ 3.8
+## 后端模块说明
+
+- auth
+    - 登录
+    - 注册
+    - 当前用户菜单
+
+- system/user
+    - 用户增删改查
+    - 分配角色
+
+- system/role
+    - 角色增删改查
+    - 分配权限
+    - 分配菜单
+
+- system/permission
+    - 权限增删改查
+
+- system/menu
+    - 菜单增删改查
+    - 菜单树
+
+- system/dept
+    - 部门树
+    - 部门增删改查
+
+- system/log
+    - 登录日志
+    - 操作日志
+
+- order
+    - 订单增删改查
+    - 分配 / 完成订单
+    - 数据范围过滤
 
 ---
 
-## 🛠️ 快速启动
+## 前端页面
 
-### 1️⃣ 后端启动（Spring Boot）
-
-#### ① 创建数据库
-
-```sql
-CREATE DATABASE logistics DEFAULT CHARACTER SET utf8mb4;
-```
-
-#### ② 修改数据库配置
-
-文件路径：
-
-```
-backend/src/main/resources/application-dev.yml
-```
-
-示例：
-
-```yml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/logistics?useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
-```
-
-#### ③ 启动后端
-
-```bash
-cd backend
-mvn spring-boot:run
-```
-
-启动成功后访问：
-
-```
-http://localhost:8080
-```
+- 登录页
+- 首页
+- 用户管理
+- 角色管理
+- 权限管理
+- 菜单管理
+- 部门管理
+- 订单管理
+- 登录日志
+- 操作日志
 
 ---
 
-### 2️⃣ 前端启动（Vue 3）
+## 快速启动
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### 1. 克隆项目
 
-浏览器访问：
+    git clone https://github.com/ldk3589/logistics-example.git
+    cd logistics-example
 
-```
-http://localhost:5173
-```
+### 2. 启动后端
 
----
+    cd backend
+    mvn spring-boot:run
 
-## 🔗 接口示例（节选）
+后端默认地址：
 
-### 用户登录
+    http://localhost:8080
 
-```
-POST /auth/login
-```
+### 3. 启动前端
 
-请求参数：
+    cd frontend
+    npm install
+    npm run dev
 
-```json
-{
-  "username": "test",
-  "password": "123456"
-}
-```
+前端默认地址：
 
-返回示例：
-
-```json
-{
-  "token": "xxxx.yyyy.zzzz",
-  "userInfo": {
-    "id": 1,
-    "username": "test",
-    "role": "USER"
-  }
-}
-```
+    http://localhost:5173
 
 ---
 
-## 🔐 登录与注册逻辑说明
+## 数据库说明
 
-- 用户注册：
-    - 自动校验用户名 / 密码合法性
-    - 默认注册为普通用户
-    - 管理员注册需输入正确的管理员密码
+请先准备好 MySQL 数据库，然后在后端配置文件中修改数据库连接信息。
 
-- 用户登录：
-    - 登录成功返回 Token + 用户信息
-    - Token 存储于 localStorage
-    - 前端路由守卫控制访问权限
+常见需要配置的内容包括：
 
----
+- 数据库地址
+- 端口
+- 数据库名
+- 用户名
+- 密码
 
-## 📄 日志说明
+同时还需要初始化：
 
-### 后端日志
-- 自动生成于：
-
-```
-backend/logs/
-```
-
-- 包含：
-    - 启动日志
-    - SQL 执行日志
-    - 接口访问与异常日志
-
-### 前端日志
-- 可扩展为：
-    - 控制台错误捕获
-    - 请求失败日志
-    - 用户行为日志
+- 用户表
+- 角色表
+- 权限表
+- 菜单表
+- 部门表
+- 用户-角色关联表
+- 角色-权限关联表
+- 角色-菜单关联表
+- 订单表
+- 登录日志表
+- 操作日志表
 
 ---
 
-## 🎯 项目定位
+## 权限设计
 
-- ✔ Java 后端 / 全栈面试项目
-- ✔ Spring Boot + Vue 3 综合实战
-- ✔ 可持续扩展为真实业务系统
-- ✔ 结构清晰，适合二次开发
+系统采用典型的 RBAC 模型：
+
+- 用户 -> 角色
+- 角色 -> 权限
+- 角色 -> 菜单
+
+在本项目中：
+
+- 用户不直接拥有权限
+- 用户通过角色获得权限
+- 前端按钮是否显示依赖权限码
+- 真正的安全控制仍以后端权限校验为准
+
+---
+
+## 使用说明
+
+在测试项目前，请先确认：
+
+- 数据库中的菜单路径与前端路由路径一致
+- 角色和权限初始化数据正确
+- 用户密码加密正确
+- 后端接口地址与前端请求地址一致
+
+如果某些页面是空白的，优先检查：
+
+- 前端路由路径
+- 数据库菜单 path
+- 当前用户是否有权限
+- 后端接口地址是否正确
 
 ---
 
-## 📌 后续可扩展方向（建议）
+## 后续可优化方向
 
-- 订单分页与搜索
-- 管理员后台面板
-- 数据导出（Excel）
-- 操作审计日志
-- Docker 一键部署
+- 动态路由注册
+- 数据导出
+- Swagger 文档完善
+- Docker 部署
+- 单元测试
+- 页面级、按钮级权限进一步封装
+- 更好的部门选择器和用户选择器组件
 
 ---
+
+## License
+
+本项目用于学习和个人展示。

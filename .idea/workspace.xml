@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbbf0008-2af6-401a-9dc6-259619be496d" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/rbac_upgrade.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-    </list>
+    <list default="true" id="fbbf0008-2af6-401a-9dc6-259619be496d" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,6 +60,7 @@
       <workItem from="1769496507015" duration="624000" />
       <workItem from="1769608209698" duration="42000" />
       <workItem from="1773062752706" duration="1243000" />
+      <workItem from="1773219297820" duration="1973000" />
     </task>
     <servers />
   </component>
