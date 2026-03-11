@@ -40,6 +40,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PageResult<OrderVO> listOrders(OrderQueryDTO queryDTO) {
+        if (queryDTO == null) {
+            queryDTO = new OrderQueryDTO();
+            queryDTO.setPageNum(1L);
+            queryDTO.setPageSize(10L);
+        }
         Long userId = SecurityUtils.getUserId();
         Long deptId = SecurityUtils.getDeptId();
 

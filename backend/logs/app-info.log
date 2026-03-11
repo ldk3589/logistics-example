@@ -1,0 +1,42 @@
+2026-03-11 18:18:13.835 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-03-11 18:18:13.918 INFO  [main] c.d.l.LogisticsManagerApplication - Starting LogisticsManagerApplication using Java 21.0.9 with PID 14560 (E:\Java\l\logistics-example\backend\target\classes started by dell in E:\Java\l\logistics-example\backend)
+2026-03-11 18:18:13.920 INFO  [main] c.d.l.LogisticsManagerApplication - No active profile set, falling back to 1 default profile: "default"
+2026-03-11 18:18:16.155 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-11 18:18:16.173 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-03-11 18:18:16.176 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-11 18:18:16.176 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.33]
+2026-03-11 18:18:16.257 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-11 18:18:16.257 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2273 ms
+2026-03-11 18:18:17.162 INFO  [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-11 18:18:18.454 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-03-11 18:18:18.486 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-03-11 18:18:18.497 INFO  [main] c.d.l.LogisticsManagerApplication - Started LogisticsManagerApplication in 5.515 seconds (process running for 6.248)
+2026-03-11 18:18:52.347 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-11 18:18:52.347 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-03-11 18:18:52.349 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-03-11 18:19:08.410 INFO  [http-nio-8080-exec-10] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-03-11 18:19:08.605 INFO  [http-nio-8080-exec-10] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7e859a81
+2026-03-11 18:19:08.607 INFO  [http-nio-8080-exec-10] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-03-11 18:21:49.364 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-03-11 18:21:49.373 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-03-11 18:22:32.473 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-03-11 18:22:32.520 INFO  [main] c.d.l.LogisticsManagerApplication - Starting LogisticsManagerApplication using Java 21.0.9 with PID 6404 (E:\Java\l\logistics-example\backend\target\classes started by dell in E:\Java\l\logistics-example\backend)
+2026-03-11 18:22:32.521 INFO  [main] c.d.l.LogisticsManagerApplication - No active profile set, falling back to 1 default profile: "default"
+2026-03-11 18:22:34.652 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-11 18:22:34.671 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-03-11 18:22:34.674 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-11 18:22:34.674 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.33]
+2026-03-11 18:22:34.763 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-11 18:22:34.764 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2190 ms
+2026-03-11 18:22:35.584 INFO  [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-11 18:22:36.787 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-03-11 18:22:36.815 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-03-11 18:22:36.827 INFO  [main] c.d.l.LogisticsManagerApplication - Started LogisticsManagerApplication in 4.957 seconds (process running for 5.402)
+2026-03-11 18:22:46.403 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-11 18:22:46.403 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-03-11 18:22:46.407 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2026-03-11 18:22:46.611 INFO  [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-03-11 18:22:47.139 INFO  [http-nio-8080-exec-1] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@192437e4
+2026-03-11 18:22:47.201 INFO  [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-03-11 18:23:41.894 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-03-11 18:23:41.901 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

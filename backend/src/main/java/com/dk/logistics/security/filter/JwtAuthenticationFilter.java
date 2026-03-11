@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = header.substring(tokenPrefix.length());
+        String token = header.substring(tokenPrefix.length()).trim();
 
         if (!StringUtils.hasText(token) || !JwtUtils.validateToken(token)) {
             filterChain.doFilter(request, response);
