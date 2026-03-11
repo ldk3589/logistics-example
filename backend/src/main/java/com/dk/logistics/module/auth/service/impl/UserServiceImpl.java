@@ -1,4 +1,4 @@
-package com.dk.logistics.security.service.impl;
+package com.dk.logistics.module.auth.service.impl;
 
 public class UserServiceImpl {
 }

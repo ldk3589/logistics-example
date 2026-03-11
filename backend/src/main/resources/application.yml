@@ -26,3 +26,17 @@ admin:
   password:
     admin-l1: admin1-123456
     admin-l2: admin2-123456
+
+security:
+  jwt:
+    secret: your-secret-key-your-secret-key-your-secret-key
+    expire-seconds: 86400
+    header: Authorization
+    token-prefix: Bearer
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

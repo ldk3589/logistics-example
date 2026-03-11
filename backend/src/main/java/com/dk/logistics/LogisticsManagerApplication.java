@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-@MapperScan("com.dk.logistics.mapper")
 public class LogisticsManagerApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(LogisticsManagerApplication.class, args);
     }
 }

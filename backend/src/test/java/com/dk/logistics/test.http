@@ -1,8 +1,267 @@
-POST http://localhost:8080/auth/register
-Content-Type: application/json
+@host = http://localhost:8080
+@contentType = application/json
+
+### 1. 登录
+POST {{host}}/auth/login
+Content-Type: {{contentType}}
 
 {
-  "username": "admin_l21",
-  "password": "123456",
-  "role": "ADMIN_L1"
+  "username": "123",
+  "password": "123456"
 }
+
+> {%
+    client.global.set("token", response.body.data.token);
+%}
+
+###
+
+### 2. 查询当前用户菜单
+GET {{host}}/auth/menus
+Authorization: Bearer {{token}}
+
+###
+
+### 3. 查询用户列表
+GET {{host}}/api/users?pageNum=1&pageSize=10
+Authorization: Bearer {{token}}
+
+###
+
+### 4. 查询单个用户
+GET {{host}}/api/users/1
+Authorization: Bearer {{token}}
+
+###
+
+### 5. 新增用户
+POST {{host}}/api/users
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "username": "test01",
+  "password": "123456",
+  "nickname": "测试用户",
+  "realName": "测试人员",
+  "phone": "13800138000",
+  "email": "test01@example.com",
+  "deptId": 2,
+  "status": 1,
+  "remark": "IDEA HTTP测试新增"
+}
+
+###
+
+### 6. 修改用户
+PUT {{host}}/api/users/2
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "nickname": "部门管理员-修改",
+  "realName": "运营主管-修改",
+  "phone": "13800009999",
+  "email": "deptadmin_new@example.com",
+  "deptId": 2,
+  "status": 1,
+  "remark": "IDEA HTTP测试修改"
+}
+
+###
+
+### 7. 修改用户状态
+PUT {{host}}/api/users/2/status
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "status": 1
+}
+
+###
+
+### 8. 给用户分配角色
+POST {{host}}/api/users/3/roles
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "roleIds": [2, 3]
+}
+
+###
+
+### 9. 查询用户角色ID列表
+GET {{host}}/api/users/3/roles
+Authorization: Bearer {{token}}
+
+###
+
+### 10. 逻辑删除用户
+DELETE {{host}}/api/users/4
+Authorization: Bearer {{token}}
+
+###
+
+### 11. 查询角色列表
+GET {{host}}/api/roles?pageNum=1&pageSize=10
+Authorization: Bearer {{token}}
+
+###
+
+### 12. 查询单个角色
+GET {{host}}/api/roles/1
+Authorization: Bearer {{token}}
+
+###
+
+### 13. 新增角色
+POST {{host}}/api/roles
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "roleName": "测试角色",
+  "roleCode": "TEST_ROLE_HTTP",
+  "dataScope": "SELF",
+  "status": 1,
+  "sortNum": 10,
+  "remark": "IDEA HTTP测试新增角色"
+}
+
+###
+
+### 14. 修改角色
+PUT {{host}}/api/roles/2
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "roleName": "部门管理员-修改",
+  "dataScope": "DEPT",
+  "status": 1,
+  "sortNum": 2,
+  "remark": "IDEA HTTP测试修改角色"
+}
+
+###
+
+### 15. 查询角色已有权限ID
+GET {{host}}/api/roles/1/permissions
+Authorization: Bearer {{token}}
+
+###
+
+### 16. 给角色分配权限
+POST {{host}}/api/roles/2/permissions
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "permissionIds": [1, 2, 3, 21, 22]
+}
+
+###
+
+### 17. 查询角色已有菜单ID
+GET {{host}}/api/roles/1/menus
+Authorization: Bearer {{token}}
+
+###
+
+### 18. 给角色分配菜单
+POST {{host}}/api/roles/2/menus
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "menuIds": [1, 2, 6, 7, 8]
+}
+
+###
+
+### 19. 删除角色
+DELETE {{host}}/api/roles/4
+Authorization: Bearer {{token}}
+
+###
+
+### 20. 查询权限列表
+GET {{host}}/api/permissions?pageNum=1&pageSize=10
+Authorization: Bearer {{token}}
+
+###
+
+### 21. 新增权限
+POST {{host}}/api/permissions
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "permissionName": "查看审计日志",
+  "permissionCode": "sys:audit:list:http",
+  "apiUri": "/api/audit/logs",
+  "httpMethod": "GET",
+  "permissionType": "API",
+  "status": 1,
+  "remark": "IDEA HTTP测试新增权限"
+}
+
+###
+
+### 22. 查询菜单列表
+GET {{host}}/api/menus
+Authorization: Bearer {{token}}
+
+###
+
+### 23. 查询菜单树
+GET {{host}}/api/menus/tree
+Authorization: Bearer {{token}}
+
+###
+
+### 24. 新增菜单
+POST {{host}}/api/menus
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "parentId": 1,
+  "menuName": "测试菜单HTTP",
+  "menuType": "MENU",
+  "path": "/system/test-http",
+  "component": "system/test-http/index",
+  "routeName": "TestHttpMenu",
+  "icon": "Menu",
+  "permissionCode": "sys:audit:list:http",
+  "visible": 1,
+  "keepAlive": 1,
+  "sortNum": 99,
+  "status": 1,
+  "remark": "IDEA HTTP测试新增菜单"
+}
+
+###
+
+### 25. 查询订单列表
+GET {{host}}/api/orders?pageNum=1&pageSize=10
+Authorization: Bearer {{token}}
+
+###
+
+### 26. 查询操作日志
+GET {{host}}/api/logs/operations?pageNum=1&pageSize=10
+Authorization: Bearer {{token}}
+
+###
+
+### 27. 查询登录日志
+GET {{host}}/api/logs/logins?pageNum=1&pageSize=10
+Authorization: Bearer {{token}}
+
+###
+
+### 28. Swagger 页面
+GET {{host}}/swagger-ui.html

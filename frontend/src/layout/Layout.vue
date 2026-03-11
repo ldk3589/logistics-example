@@ -1,104 +1,138 @@
 <template>
-  <el-container class="layout-wrapper">
-    <el-aside width="220px" class="aside-menu">
-      <div class="logo">订单管理系统</div>
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>权限系统</h3>
+
       <el-menu
-        :default-active="$route.path"
+        :default-active="activeMenu"
         router
-        background-color="#304156"
-        text-color="#bfcbd9"
-        active-text-color="#409EFF"
+        background-color="#2d3a4b"
+        text-color="#ffffff"
+        active-text-color="#ffd04b"
       >
-        <el-menu-item index="/orders">
-          <el-icon><List /></el-icon>
-          <span>订单管理</span>
+        <el-menu-item index="/dashboard">
+          <span>首页</span>
         </el-menu-item>
-        <el-menu-item index="/stats">
-          <el-icon><PieChart /></el-icon>
-          <span>业务统计</span>
-        </el-menu-item>
-      </el-menu>
-    </el-aside>
 
-    <el-container>
-      <el-header class="nav-header">
-        <div class="header-left">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item>首页</el-breadcrumb-item>
-            <el-breadcrumb-item>{{ $route.name }}</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
-        <div class="header-right">
-          <el-dropdown @command="handleCommand">
-            <span class="user-info">
-              {{ userStore.username }} ({{ userStore.role }})
-              <el-icon><ArrowDown /></el-icon>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
+        <template v-for="menu in renderMenus" :key="menu.id">
+          <el-sub-menu
+            v-if="menu.children && menu.children.length > 0"
+            :index="String(menu.id)"
+          >
+            <template #title>
+              <span>{{ menu.menuName }}</span>
             </template>
-          </el-dropdown>
-        </div>
-      </el-header>
 
-      <el-main class="main-content">
-        <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </el-main>
-      <el-menu
-  :default-active="$route.path"
-  router
->
-  <el-menu-item
-    v-for="item in menus"
-    :key="item.path"
-    :index="item.path"
-  >
-    <el-icon>
-      <component :is="icons[item.icon]" />
-    </el-icon>
-    <span>{{ item.title }}</span>
-  </el-menu-item>
-</el-menu>
+            <el-menu-item
+              v-for="child in menu.children"
+              :key="child.id"
+              :index="normalizePath(child.path)"
+            >
+              <span>{{ child.menuName }}</span>
+            </el-menu-item>
+          </el-sub-menu>
 
-    </el-container>
-  </el-container>
+          <el-menu-item
+            v-else
+            :index="normalizePath(menu.path)"
+          >
+            <span>{{ menu.menuName }}</span>
+          </el-menu-item>
+        </template>
+      </el-menu>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <span>{{ userName }}</span>
+        <el-button size="small" type="danger" @click="logout">退出</el-button>
+      </div>
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <script setup>
-import { useUserStore } from '@/store/user'
-import { useRouter } from 'vue-router'
-import { List, PieChart, ArrowDown } from '@element-plus/icons-vue'
 import { computed } from 'vue'
-import { menuMap } from '@/config/menu'
-import * as icons from '@element-plus/icons-vue'
+import { useRoute, useRouter } from 'vue-router'
+import { clearAuth, getMenus, getUserInfo } from '../utils/auth'
 
-const userStore = useUserStore()
-
-const menus = computed(() => menuMap[userStore.role] || [])
 const router = useRouter()
+const route = useRoute()
 
-const handleCommand = (command) => {
-  if (command === 'logout') {
-    userStore.logout()
-    router.push('/login')
-  }
+const user = getUserInfo()
+
+const userName = computed(() => {
+  return user?.username || '未登录'
+})
+
+const activeMenu = computed(() => route.path)
+
+function normalizePath(path) {
+  if (!path) return '/dashboard'
+  return path.startsWith('/') ? path : `/${path}`
+}
+
+function filterMenuTree(list) {
+  if (!Array.isArray(list)) return []
+
+  return list
+    .filter(item => item && item.menuType !== 'BUTTON')
+    .map(item => {
+      const children = Array.isArray(item.children)
+        ? item.children.filter(child => child && child.menuType !== 'BUTTON')
+        : []
+
+      return {
+        ...item,
+        children
+      }
+    })
+    .filter(item => {
+      return !!item.path || (item.children && item.children.length > 0)
+    })
+}
+
+const renderMenus = computed(() => {
+  const menus = getMenus()
+  const result = filterMenuTree(menus)
+  return result
+})
+
+function logout() {
+  clearAuth()
+  router.push('/login')
 }
 </script>
 
 <style scoped>
-.layout-wrapper { height: 100vh; }
-.aside-menu { background-color: #304156; transition: width 0.3s; }
-.logo { height: 60px; line-height: 60px; color: #fff; text-align: center; font-weight: bold; font-size: 18px; background: #2b2f3a; }
-.nav-header { background: #fff; border-bottom: 1px solid #e6e6e6; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.user-info { cursor: pointer; color: #409EFF; font-weight: 500; }
-.main-content { background: #f0f2f5; padding: 20px; }
-/* 页面切换动画 */
-.fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 240px;
+  background: #2d3a4b;
+  color: #fff;
+  padding: 16px 0;
+  box-sizing: border-box;
+}
+.sidebar h3 {
+  margin: 0;
+  padding: 0 20px 16px;
+}
+.main {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #f5f7fa;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+:deep(.el-menu) {
+  border-right: none;
+}
 </style>

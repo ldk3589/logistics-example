@@ -1,169 +1,115 @@
 <template>
-  <div class="auth-container">
-    <el-card class="auth-card">
-      <template #header>
-        <h2 class="title">{{ isLogin ? '系统登录' : '用户注册' }}</h2>
-      </template>
+  <div class="login-page">
+    <el-card class="login-card">
+      <h2>{{ isRegister ? '用户注册' : '系统登录' }}</h2>
 
-      <el-form :model="authForm" label-position="top">
-        <!-- 用户名 -->
+      <el-form :model="form" label-width="80px">
         <el-form-item label="用户名">
-          <el-input
-            v-model="authForm.username"
-            placeholder="请输入用户名"
-          />
+          <el-input v-model="form.username" />
         </el-form-item>
 
-        <!-- 密码 -->
         <el-form-item label="密码">
-          <el-input
-            v-model="authForm.password"
-            type="password"
-            show-password
-            placeholder="请输入密码"
-          />
+          <el-input v-model="form.password" type="password" show-password />
         </el-form-item>
 
-        <!-- 注册：确认密码 -->
-        <el-form-item v-if="!isLogin" label="确认密码">
-          <el-input
-            v-model="authForm.confirmPassword"
-            type="password"
-            show-password
-            placeholder="请再次输入密码"
-          />
+        <el-form-item v-if="isRegister" label="昵称">
+          <el-input v-model="form.nickname" />
         </el-form-item>
 
-        <!-- 注册：管理员密码（非必填） -->
-        <el-form-item v-if="!isLogin" label="管理员密码">
-          <el-input
-            v-model="authForm.adminPassword"
-            type="password"
-            show-password
-            placeholder="不填写则注册为普通用户"
-          />
+        <el-form-item v-if="isRegister" label="真实姓名">
+          <el-input v-model="form.realName" />
         </el-form-item>
 
-        <el-button
-          type="primary"
-          class="submit-btn"
-          @click="handleAction"
-        >
-          {{ isLogin ? '立即登录' : '提交注册' }}
+        <el-form-item v-if="isRegister" label="手机号">
+          <el-input v-model="form.phone" />
+        </el-form-item>
+
+        <el-form-item v-if="isRegister" label="邮箱">
+          <el-input v-model="form.email" />
+        </el-form-item>
+
+        <el-form-item v-if="isRegister" label="部门ID">
+          <el-input v-model.number="form.deptId" />
+        </el-form-item>
+
+        <el-button v-if="!isRegister" type="primary" style="width:100%" @click="handleLogin">
+          登录
         </el-button>
 
-        <div class="footer-links">
-          <el-link type="primary" @click="toggleMode">
-            {{ isLogin ? '没有账号？去注册' : '已有账号？去登录' }}
-          </el-link>
-        </div>
+        <el-button v-else type="success" style="width:100%" @click="handleRegister">
+          注册
+        </el-button>
+
+        <el-button text style="margin-top: 12px; width:100%" @click="isRegister = !isRegister">
+          {{ isRegister ? '已有账号？去登录' : '没有账号？去注册' }}
+        </el-button>
       </el-form>
     </el-card>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { loginApi, registerApi } from '@/api/auth'
+import request from '../utils/request'
+import { setToken, setUserInfo, setPermissions, setMenus } from '../utils/auth'
 
 const router = useRouter()
-const isLogin = ref(true)
+const isRegister = ref(false)
 
-const authForm = reactive({
+const form = reactive({
   username: '',
   password: '',
-  confirmPassword: '',
-  adminPassword: ''
+  nickname: '',
+  realName: '',
+  phone: '',
+  email: '',
+  deptId: 2
 })
 
-const hasInnerSpace = (str) => /\s/.test(str)
-
-const toggleMode = () => {
-  isLogin.value = !isLogin.value
-  // 切换时清空表单，防止状态污染
-  Object.assign(authForm, {
-    username: '',
-    password: '',
-    confirmPassword: '',
-    adminPassword: ''
-  })
+function toggleMode() {
+  isRegister.value = !isRegister.value
 }
 
-const handleAction = async () => {
-  // 自动 trim 首尾空格
-  authForm.username = authForm.username.trim()
-  authForm.password = authForm.password.trim()
-  authForm.confirmPassword = authForm.confirmPassword.trim()
-  authForm.adminPassword = authForm.adminPassword.trim()
+async function handleLogin() {
+  const res = await request.post('/auth/login', {
+    username: form.username,
+    password: form.password
+  })
+  const data = res.data
+  setToken(data.token)
+  setUserInfo(data.userInfo)
+  setPermissions(data.permissions || [])
+  setMenus(data.menus || [])
+  ElMessage.success('登录成功')
+  router.push('/dashboard')
+}
 
-  if (!authForm.username || !authForm.password) {
-    return ElMessage.warning('用户名和密码不能为空')
-  }
-
-  if (hasInnerSpace(authForm.username)) {
-    return ElMessage.warning('用户名中间不能包含空格')
-  }
-
-  if (hasInnerSpace(authForm.password)) {
-    return ElMessage.warning('密码中间不能包含空格')
-  }
-
-  try {
-    if (isLogin.value) {
-      // 登录
-      const token = await loginApi({
-        username: authForm.username,
-        password: authForm.password
-      })
-      localStorage.setItem('token', token)
-      ElMessage.success('登录成功')
-      router.push('/orders')
-    } else {
-      // 注册逻辑
-      if (authForm.password !== authForm.confirmPassword) {
-        return ElMessage.warning('两次输入的密码不一致')
-      }
-
-      await registerApi({
-        username: authForm.username,
-        password: authForm.password,
-        adminPassword:authForm.adminPassword
-      })
-
-      ElMessage.success('注册成功，请登录')
-      toggleMode()
-    }
-  } catch (err) {
-    // 错误已由 axios 拦截器统一处理
-  }
+async function handleRegister() {
+  await request.post('/auth/register', {
+    username: form.username,
+    password: form.password,
+    nickname: form.nickname,
+    realName: form.realName,
+    phone: form.phone,
+    email: form.email,
+    deptId: form.deptId
+  })
+  ElMessage.success('注册成功，请登录')
+  isRegister.value = false
 }
 </script>
 
 <style scoped>
-.auth-container {
-  height: 100vh;
+.login-page {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f5f7fa;
 }
-.auth-card {
-  width: 400px;
-  border-radius: 12px;
-}
-.title {
-  text-align: center;
-  margin: 0;
-  color: #409eff;
-}
-.submit-btn {
-  width: 100%;
-  margin-top: 10px;
-}
-.footer-links {
-  margin-top: 15px;
-  text-align: center;
+.login-card {
+  width: 460px;
 }
 </style>

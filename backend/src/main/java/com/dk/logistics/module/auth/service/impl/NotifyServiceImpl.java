@@ -1,8 +1,9 @@
-package com.dk.logistics.security.service.impl;
+package com.dk.logistics.module.auth.service.impl;
 
-import com.dk.logistics.entity.Order;
-import com.dk.logistics.entity.SysUser;
-import com.dk.logistics.security.service.NotifyService;
+
+import com.dk.logistics.module.auth.service.NotifyService;
+import com.dk.logistics.module.order.entity.Order;
+import com.dk.logistics.module.system.user.entity.SysUser;
 import org.springframework.stereotype.Service;
 
 @Service

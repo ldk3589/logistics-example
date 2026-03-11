@@ -1,7 +1,8 @@
-package com.dk.logistics.mapper;
+package com.dk.logistics.module.system.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dk.logistics.entity.SysUser;
+
+import com.dk.logistics.module.system.user.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

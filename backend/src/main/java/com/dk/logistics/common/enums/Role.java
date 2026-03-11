@@ -1,4 +1,4 @@
-package com.dk.logistics.enums;
+package com.dk.logistics.common.enums;
 
 public enum Role {
     USER,

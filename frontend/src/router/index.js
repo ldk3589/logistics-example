@@ -1,48 +1,59 @@
-import { createRouter, createWebHistory } from 'vue-router';
-// 导入组件
-import Login from '../views/Login.vue';
-import Order from '../views/Order.vue';
-import OrderStat from "../views/OrderStat.vue"
+import { createRouter, createWebHistory } from 'vue-router'
+import { getToken } from '../utils/auth'
+import Layout from '../layout/Layout.vue'
+import Login from '../views/Login.vue'
+import Dashboard from '../views/Dashboard.vue'
+import UserList from '../views/UserList.vue'
+import RoleList from '../views/RoleList.vue'
+import PermissionList from '../views/PermissionList.vue'
+import MenuList from '../views/MenuList.vue'
+import OrderList from '../views/OrderList.vue'
+import LoginLogList from '../views/LoginLogList.vue'
+import OperationLogList from '../views/OperationLogList.vue'
+import DeptList from '../views/DeptList.vue'
 
 const routes = [
   {
-    path: '/',
-    redirect: '/login'
-  },
-  {
     path: '/login',
-    name: 'Login',
-    component: Login,
-    meta: { requiresAuth: false }
+    component: Login
   },
   {
-    path: '/orders',
-    name: 'Orders',
-    component: Order,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/stats',
-    name: 'OrderStat',
-    component: OrderStat,
-    meta: { requiresAuth: true }
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      { path: 'dashboard', component: Dashboard },
+
+      { path: 'system/user', component: UserList },
+      { path: 'system/role', component: RoleList },
+      { path: 'system/permission', component: PermissionList },
+      { path: 'system/menu', component: MenuList },
+      { path: 'business/order', component: OrderList },
+      { path: 'log/login', component: LoginLogList },
+      { path: 'log/operation', component: OperationLogList },
+      { path: 'system/dept', component: DeptList }
+    ]
   }
-];
+]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
-});
+})
 
-// 路由守卫：如果没有 Token，强行拦截到登录页
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  
-  if (to.meta.requiresAuth && !token) {
-    next('/login');
-  } else {
-    next();
+  if (to.path === '/login') {
+    next()
+    return
   }
-});
 
-export default router;
+  const token = getToken()
+  if (!token) {
+    next('/login')
+    return
+  }
+
+  next()
+})
+
+export default router

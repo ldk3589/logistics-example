@@ -1,4 +1,4 @@
-package com.dk.logistics.security.service;
+package com.dk.logistics.module.auth.service;
 
 public interface UserService {
 }

@@ -1,40 +1,60 @@
-package com.dk.logistics.security;
+package com.dk.logistics.security.service;
 
-import com.dk.logistics.entity.SysUser;
-import com.dk.logistics.module.system.user.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dk.logistics.module.system.permission.mapper.SysPermissionMapper;
+import com.dk.logistics.module.system.role.mapper.SysRoleMapper;
+import com.dk.logistics.module.system.user.entity.SysUser;
+import com.dk.logistics.module.system.user.mapper.SysUserMapper;
+import com.dk.logistics.security.model.LoginUser;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final SysUserMapper sysUserMapper;
+    private final SysRoleMapper sysRoleMapper;
+    private final SysPermissionMapper sysPermissionMapper;
+
+    public CustomUserDetailsService(SysUserMapper sysUserMapper,
+                                    SysRoleMapper sysRoleMapper,
+                                    SysPermissionMapper sysPermissionMapper) {
+        this.sysUserMapper = sysUserMapper;
+        this.sysRoleMapper = sysRoleMapper;
+        this.sysPermissionMapper = sysPermissionMapper;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysUser user = userMapper.selectOne(
-                new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<SysUser>()
-                        .eq(SysUser::getUsername, username)
-        );
-
+        SysUser user = sysUserMapper.selectByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
 
-        // 给角色加前缀 ROLE_，Spring Security 要求
-        List<SimpleGrantedAuthority> authorities = List.of(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole())
-        );
+        List<String> roles = sysRoleMapper.selectRoleCodesByUserId(user.getId());
+        List<String> permissions = sysPermissionMapper.selectPermissionCodesByUserId(user.getId());
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                authorities
-        );
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        }
+        for (String permission : permissions) {
+            authorities.add(new SimpleGrantedAuthority(permission));
+        }
+
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUserId(user.getId());
+        loginUser.setUsername(user.getUsername());
+        loginUser.setPassword(user.getPassword());
+        loginUser.setEnabled(user.getStatus() != null && user.getStatus() == 1);
+        loginUser.setDeptId(user.getDeptId());
+        loginUser.setRoles(roles);
+        loginUser.setPermissions(permissions);
+        loginUser.setAuthorities(authorities);
+
+        return loginUser;
     }
 }

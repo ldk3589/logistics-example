@@ -1,4 +1,4 @@
-package com.dk.logistics.vo;
+package com.dk.logistics.module.auth.vo;
 
 import lombok.Data;
 import java.math.BigDecimal;

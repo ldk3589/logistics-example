@@ -1,4 +1,9 @@
 package com.dk.logistics.framework.annotation;
 
-public class DataScope {
+import java.lang.annotation.*;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface DataScope {
 }
